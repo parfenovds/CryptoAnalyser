@@ -1,5 +1,7 @@
 package ru.javarush.cryptoanaliser.parfenov.commands;
 
-public interface Action {
+import ru.javarush.cryptoanaliser.parfenov.entity.Result;
 
+public interface Action {
+    Result execute(String[] args);
 }

@@ -1,6 +1,6 @@
 package ru.javarush.cryptoanaliser.parfenov.app;
 
-import ru.javarush.cryptoanaliser.parfenov.Result;
+import ru.javarush.cryptoanaliser.parfenov.entity.Result;
 import ru.javarush.cryptoanaliser.parfenov.controller.MainController;
 
 import java.util.Arrays;

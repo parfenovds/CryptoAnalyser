@@ -1,13 +1,14 @@
 package ru.javarush.cryptoanaliser.parfenov.controller;
 
-import ru.javarush.cryptoanaliser.parfenov.Result;
-
-import javax.naming.OperationNotSupportedException;
+import ru.javarush.cryptoanaliser.parfenov.commands.Action;
+import ru.javarush.cryptoanaliser.parfenov.entity.Result;
 
 public class MainController {
 
 
     public Result execute(String command, String[] parameters) {
-        throw new UnsupportedOperationException();
+        Action action = Actions.find(command);
+        Result result = action.execute(parameters);
+        return result;
     }
 }
