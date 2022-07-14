@@ -4,7 +4,6 @@ import ru.javarush.cryptoanaliser.parfenov.constants.Alphabet;
 import ru.javarush.cryptoanaliser.parfenov.entity.Result;
 import ru.javarush.cryptoanaliser.parfenov.entity.ResultCode;
 import ru.javarush.cryptoanaliser.parfenov.exception.ApplicationException;
-import ru.javarush.cryptoanaliser.parfenov.util.PathFinder;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -22,15 +21,16 @@ public abstract class AbstractCrypt {
         } catch (IOException e) {
             throw new ApplicationException("It's a problem with your file", e);
         }
-        return new Result(ResultCode.OK, "text encrypted");
+        return new Result(ResultCode.OK, "Done");
     }
 
 
     public int encrypting(int character, int key) {
         //Character ch = (char)character;
-        int a = Alphabet.RUSSIAN_ALPHABET.indexOf((char)character);
+        int a = Alphabet.ALPHABET.indexOf((char)character);
+        //if(a == -1) System.out.println((char) character);
         if(a == -1) return a;
-        int b = Math.floorMod((a + (key % Alphabet.RUSSIAN_ALPHABET.size())), Alphabet.RUSSIAN_ALPHABET.size());
-        return (int) Alphabet.RUSSIAN_ALPHABET.get(b);
+        int b = Math.floorMod((a + (key % Alphabet.ALPHABET.size())), Alphabet.ALPHABET.size());
+        return (int) Alphabet.ALPHABET.get(b);
     }
 }
