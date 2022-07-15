@@ -27,10 +27,10 @@ public abstract class AbstractCrypt {
 
     public int encrypting(int character, int key) {
         //Character ch = (char)character;
-        int a = Alphabet.ALPHABET.indexOf((char)character);
+        int a = Alphabet.FULL_ALPHABET.indexOf((char)character);
         //if(a == -1) System.out.println((char) character);
         if(a == -1) return a;
-        int b = Math.floorMod((a + (key % Alphabet.ALPHABET.size())), Alphabet.ALPHABET.size());
-        return (int) Alphabet.ALPHABET.get(b);
+        int b = Math.floorMod((a + (key % Alphabet.FULL_ALPHABET.length())), Alphabet.FULL_ALPHABET.length());
+        return (int) Alphabet.FULL_ALPHABET.charAt(b);
     }
 }
