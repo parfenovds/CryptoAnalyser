@@ -12,7 +12,8 @@ public class StatisticsCollector {
     //private TreeMap<Character, CharAndFrequency> prepsForStatistics = new TreeMap<>();
     private TreeMap<Character, TreeMap<Character, CharAndFrequency>> nextCharsFreqCollect = new TreeMap<>();
     private TreeMap<Character, TreeMap<CharAndFrequency, Character>> nextCharsFreqUsing = new TreeMap<>();
-    private TreeMap<Character, TreeMap<Character, CharAndFrequency>> statisticsForPreviousChar = new TreeMap<>();
+    private TreeMap<Character, TreeMap<Character, CharAndFrequency>> prevCharsFreqCollect = new TreeMap<>();
+    private TreeMap<Character, TreeMap<CharAndFrequency, Character>> prevCharsFreqUsing = new TreeMap<>();
 
     public void getStatistics(Path path) {
 //        prepsForStatisticsGenerator();
@@ -25,19 +26,14 @@ public class StatisticsCollector {
                 charsFreqCollect.get(character).addFrequency();
 
                 if(previousCharacter != null) {
-                    if(!nextCharsFreqCollect.containsKey(previousCharacter)) {
-                        TreeMap<Character, CharAndFrequency> newEntryForStatistics = new TreeMap<>() {{
-                            put(character, new CharAndFrequency(character));
-                        }};
-                        nextCharsFreqCollect.put(previousCharacter, newEntryForStatistics);
-                    }
-                    nextCharsFreqCollect.get(previousCharacter).putIfAbsent(character, new CharAndFrequency(character));
-                    nextCharsFreqCollect.get(previousCharacter).get(character).addFrequency();
+                    statisticCollector(previousCharacter, character, nextCharsFreqCollect);
+                    statisticCollector(character, previousCharacter, prevCharsFreqCollect);
                 }
                 previousCharacter = character;
 
             }
-            mapReversingConveyor(nextCharsFreqCollect);
+            mapReversingConveyor(nextCharsFreqCollect, nextCharsFreqUsing);
+            mapReversingConveyor(prevCharsFreqCollect, prevCharsFreqUsing);
             charsFreqUsing = reverseMap(charsFreqCollect);
 
             for (CharAndFrequency character : charsFreqUsing.keySet()) {
@@ -50,14 +46,35 @@ public class StatisticsCollector {
                             innerCh.getFrequency());
                 }
             }
+            System.out.println("*".repeat(20));
+            for (Character character : prevCharsFreqUsing.keySet()) {
+                System.out.println("For " + character + ":");
+                for (CharAndFrequency innerCh : prevCharsFreqUsing.get(character).keySet()) {
+                    System.out.println(innerCh.getCharacter() + " = " +
+                            innerCh.getFrequency());
+                }
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-//TODO: generalize this method (it should be used not for one map only)
-    private void mapReversingConveyor(TreeMap<Character, TreeMap<Character, CharAndFrequency>> containerToExtractAndReverseMaps) {
-        for (Character key : containerToExtractAndReverseMaps.keySet()) {
-            nextCharsFreqUsing.put(key, reverseMap(containerToExtractAndReverseMaps.get(key)));
+
+    private void statisticCollector(Character previousCharacter, Character character,
+                                    TreeMap<Character, TreeMap<Character, CharAndFrequency>> CharsFreqCollect) {
+        if(!CharsFreqCollect.containsKey(previousCharacter)) {
+            TreeMap<Character, CharAndFrequency> newEntryForStatistics = new TreeMap<>() {{
+                put(character, new CharAndFrequency(character));
+            }};
+            CharsFreqCollect.put(previousCharacter, newEntryForStatistics);
+        }
+        CharsFreqCollect.get(previousCharacter).putIfAbsent(character, new CharAndFrequency(character));
+        CharsFreqCollect.get(previousCharacter).get(character).addFrequency();
+    }
+
+    private void mapReversingConveyor(TreeMap<Character, TreeMap<Character, CharAndFrequency>> mapToExtractAndReverseMaps,
+                                      TreeMap<Character, TreeMap<CharAndFrequency, Character>> mapToPutReversedMaps) {
+        for (Character key :  mapToExtractAndReverseMaps.keySet()) {
+            mapToPutReversedMaps.put(key, reverseMap( mapToExtractAndReverseMaps.get(key)));
         }
     }
 
@@ -69,18 +86,4 @@ public class StatisticsCollector {
         }
         return reversedMap;
     }
-
-//    private void statisticTreeGenerator() {
-//        for (int i = 0; i < Alphabet.TINY_ALPHA.length(); i++) {
-//            CharAndFrequency charAndFrequency = new CharAndFrequency(Alphabet.TINY_ALPHA.charAt(i));
-//            statisticsTree.put(charAndFrequency, statisticsForOneChar);
-//        }
-//    }
-//
-//    private void prepsForStatisticsGenerator() {
-//        for (int i = 0; i < Alphabet.TINY_ALPHA.length(); i++) {
-//            CharAndFrequency charAndFrequency = new CharAndFrequency(Alphabet.TINY_ALPHA.charAt(i));
-//            statisticsForOneChar.add(charAndFrequency);
-//        }
-//    }
 }
