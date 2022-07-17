@@ -6,18 +6,15 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
-public class StatisticsCollector {
+public class StatCollector {
     private TreeMap<Character, CharAndFrequency> charsFreqCollect = new TreeMap<>();
-    private TreeMap<CharAndFrequency, Character> charsFreqUsing = new TreeMap<>();
-    //private TreeMap<Character, CharAndFrequency> prepsForStatistics = new TreeMap<>();
+    private TreeMap<CharAndFrequency, Character> charsFreq = new TreeMap<>();
     private TreeMap<Character, TreeMap<Character, CharAndFrequency>> nextCharsFreqCollect = new TreeMap<>();
-    private TreeMap<Character, TreeMap<CharAndFrequency, Character>> nextCharsFreqUsing = new TreeMap<>();
+    private TreeMap<Character, TreeMap<CharAndFrequency, Character>> nextCharsFreq = new TreeMap<>();
     private TreeMap<Character, TreeMap<Character, CharAndFrequency>> prevCharsFreqCollect = new TreeMap<>();
-    private TreeMap<Character, TreeMap<CharAndFrequency, Character>> prevCharsFreqUsing = new TreeMap<>();
+    private TreeMap<Character, TreeMap<CharAndFrequency, Character>> prevCharsFreq = new TreeMap<>();
 
     public void getStatistics(Path path) {
-//        prepsForStatisticsGenerator();
-//        statisticTreeGenerator();
         try(BufferedReader reader = new BufferedReader(new FileReader(path.toFile()))) {
             Character previousCharacter = null;
             while(reader.ready()) {
@@ -32,24 +29,26 @@ public class StatisticsCollector {
                 previousCharacter = character;
 
             }
-            mapReversingConveyor(nextCharsFreqCollect, nextCharsFreqUsing);
-            mapReversingConveyor(prevCharsFreqCollect, prevCharsFreqUsing);
-            charsFreqUsing = reverseMap(charsFreqCollect);
+            mapReversingConveyor(nextCharsFreqCollect, nextCharsFreq);
+            mapReversingConveyor(prevCharsFreqCollect, prevCharsFreq);
+            charsFreq = getReversedMap(charsFreqCollect);
 
-            for (CharAndFrequency character : charsFreqUsing.keySet()) {
+            System.out.println("*".repeat(20) + "mainStatistics");
+            for (CharAndFrequency character : charsFreq.keySet()) {
                 System.out.println("\"" + character.getCharacter() + "\"" + " is " + character.getFrequency());
             }
-            for (Character character : nextCharsFreqUsing.keySet()) {
+            System.out.println("*".repeat(20) + "nextStatistics:");
+            for (Character character : nextCharsFreq.keySet()) {
                 System.out.println("For " + character + ":");
-                for (CharAndFrequency innerCh : nextCharsFreqUsing.get(character).keySet()) {
+                for (CharAndFrequency innerCh : nextCharsFreq.get(character).keySet()) {
                     System.out.println(innerCh.getCharacter() + " = " +
                             innerCh.getFrequency());
                 }
             }
-            System.out.println("*".repeat(20));
-            for (Character character : prevCharsFreqUsing.keySet()) {
+            System.out.println("*".repeat(20) + "previousStatistics:");
+            for (Character character : prevCharsFreq.keySet()) {
                 System.out.println("For " + character + ":");
-                for (CharAndFrequency innerCh : prevCharsFreqUsing.get(character).keySet()) {
+                for (CharAndFrequency innerCh : prevCharsFreq.get(character).keySet()) {
                     System.out.println(innerCh.getCharacter() + " = " +
                             innerCh.getFrequency());
                 }
@@ -74,16 +73,48 @@ public class StatisticsCollector {
     private void mapReversingConveyor(TreeMap<Character, TreeMap<Character, CharAndFrequency>> mapToExtractAndReverseMaps,
                                       TreeMap<Character, TreeMap<CharAndFrequency, Character>> mapToPutReversedMaps) {
         for (Character key :  mapToExtractAndReverseMaps.keySet()) {
-            mapToPutReversedMaps.put(key, reverseMap( mapToExtractAndReverseMaps.get(key)));
+            mapToPutReversedMaps.put(key, getReversedMap( mapToExtractAndReverseMaps.get(key)));
         }
     }
 
 //TODO: find out how to generalize it with <K,V> or something like that
-    private TreeMap<CharAndFrequency, Character> reverseMap(TreeMap<Character, CharAndFrequency> mapToReverse) {
+    private TreeMap<CharAndFrequency, Character> getReversedMap(TreeMap<Character, CharAndFrequency> mapToReverse) {
         TreeMap<CharAndFrequency, Character> reversedMap = new TreeMap<>();
         for(Map.Entry<Character, CharAndFrequency> entry : mapToReverse.entrySet()) {
             reversedMap.put(entry.getValue(), entry.getKey());
         }
         return reversedMap;
+    }
+
+    //TODO change char - CaF to CaF - CaF!!!!!!
+    public TreeMap<CharAndFrequency, CharAndFrequency> getMapForDraft(TreeMap<CharAndFrequency, Character> dicCharsFreq) {
+        TreeMap<CharAndFrequency, CharAndFrequency> result = new TreeMap<>();
+//        while(this.charsFreq.size() > 0) {
+//
+//        }
+//        for (CharAndFrequency key : this.charsFreq.keySet()) {
+//            result.put(key, )
+//        }
+//        NavigableSet<CharAndFrequency> charAndFrequencies = this.charsFreq.navigableKeySet();
+        Set<Map.Entry<CharAndFrequency, Character>> encEntrySet = this.charsFreq.entrySet();
+        Set<Map.Entry<CharAndFrequency, Character>> dicEntrySet = dicCharsFreq.entrySet();
+        Iterator<Map.Entry<CharAndFrequency, Character>> iteratorEnc = encEntrySet.iterator();
+        Iterator<Map.Entry<CharAndFrequency, Character>> iteratorDic = dicEntrySet.iterator();
+        while(iteratorEnc.hasNext()) {
+            result.put(iteratorEnc.next().getKey(), iteratorDic.next().getKey());
+        }
+        return result;
+    }
+
+    public TreeMap<CharAndFrequency, Character> getCharsFreq() {
+        return charsFreq;
+    }
+
+    public TreeMap<Character, TreeMap<CharAndFrequency, Character>> getNextCharsFreq() {
+        return nextCharsFreq;
+    }
+
+    public TreeMap<Character, TreeMap<CharAndFrequency, Character>> getPrevCharsFreq() {
+        return prevCharsFreq;
     }
 }

@@ -23,8 +23,7 @@ public class BruteForceDecrypt extends AbstractCrypt implements Action{
         //System.out.println(Files.getAttribute());
         int bufferSize = 200;
         Path path = (Path) arguments.get(ArgumentTypes.INPUT_FILE);
-        try (FileReader fileReader = new FileReader(path.toFile());
-                BufferedReader reader = new BufferedReader(fileReader)) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(path.toFile()))) {
             reader.mark(1);
             List<Integer> probingResults = new ArrayList<>();
             for (int key = 0; key < Alphabet.FULL_ALPHABET.length(); key++) {
@@ -38,7 +37,7 @@ public class BruteForceDecrypt extends AbstractCrypt implements Action{
                         buffer.append((char)character);
                     }
                 }
-                probingResults.add(SpellChecker.patternChecking(buffer));
+                probingResults.add(SpellChecker.patternMatchingCounter(buffer));
                 if(probingResults.get(probingResults.size()-1) == 0) {
                     System.out.println(buffer);
                     System.out.println("\n********************");

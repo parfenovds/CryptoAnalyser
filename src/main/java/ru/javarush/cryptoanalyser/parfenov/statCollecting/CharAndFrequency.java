@@ -6,6 +6,7 @@ public class CharAndFrequency implements Comparable<CharAndFrequency> {
     private Character character;
 
     private int frequency;
+    private double percentage;
 
     public CharAndFrequency(Character character) {
         this.character = character;
@@ -15,12 +16,20 @@ public class CharAndFrequency implements Comparable<CharAndFrequency> {
         this.character = character;
     }
 
-    public void setFrequency(int frequency) {
-        this.frequency = frequency;
-    }
-
     public char getCharacter() {
         return character;
+    }
+
+    public void setPercentage(double percentage) {
+        this.percentage = percentage;
+    }
+
+    public double getPercentage() {
+        return percentage;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
     }
 
     public int getFrequency() {
@@ -46,10 +55,15 @@ public class CharAndFrequency implements Comparable<CharAndFrequency> {
 
     @Override
     public int compareTo(CharAndFrequency anotherChar) {
-        int result = this.frequency - anotherChar.frequency;
+        int result = anotherChar.frequency - this.frequency;
         if(result == 0) {
             result = this.character.compareTo(anotherChar.character);
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return character.toString();
     }
 }

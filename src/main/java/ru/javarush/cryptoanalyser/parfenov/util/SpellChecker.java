@@ -6,36 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SpellChecker {
-
-
-
-    //    public static int lengthBetweenSpacesCounter(char[] probe) {
-//        int result = 0;
-//        int counter = 0;
-//        for (int i = 0; i < probe.length; i++) {
-//            if(!Character.isWhitespace(probe[i])) {
-//                counter++;
-//            } else {
-//                counter = 0;
-//            }
-//            if(counter > 25) {
-//                result++;
-//                counter = 0;
-//            }
-//        }
-//        return result;
-//    }
-//    public static int second(char[] probe) {
-//        int result = 0;
-//        for (int i = 0; i < probe.length; i++) {
-//            if()
-//        }
-//    }
-
-
-    public static int patternChecking(StringBuilder probe) {
+    public static int patternMatchingCounter(StringBuilder probe) {
         int result = 0;
-        for (String regex : Patterns.regexList) {
+        for (String regex : Patterns.regexBruteList) {
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(probe);
             while(matcher.find()) {
@@ -43,5 +16,33 @@ public class SpellChecker {
             }
         }
         return result;
+    }
+    public static boolean patternMatchingChecker(StringBuilder probe, String regex) {
+        boolean checked = false;
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(probe);
+        if(matcher.find()) {
+            checked = true;
+        }
+        return checked;
+    }
+    public static boolean patternMatchingChecker(char probe, String regex) {
+        String strProbe = "" + probe;
+        boolean checked = false;
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(strProbe);
+        if(matcher.find()) {
+            checked = true;
+        }
+        return checked;
+    }
+    public static int getIndexOfMatching(StringBuilder probe, String regex) {
+        int index = -1;
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(probe);
+        if(matcher.find()) {
+            index = matcher.start();
+        }
+        return index;
     }
 }
