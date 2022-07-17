@@ -5,7 +5,8 @@ import java.util.List;
 
 public class Patterns {
     private static final String INCORRECT_LENGTH_BETWEEN_SPACES = "[^ \n\t*-]{25}";
-    private static final String SPACE_AFTER_PUNCTUATION = "[.,»:!?);]+[^ \t\n\\d]";
+    public static final String SPACE_AFTER_PUNCTUATION = "[.,»:!?);]+[^ \t\n\\d]";
+    public static final String VALID_CHAR_INSTEAD_OF_PUNCTUATION = "[а-яё]";
     private static final String FORBIDDEN_LETTERS_AT_START = "[\t\n ]+[ъыьЪЫЬ]+";
     private static final String STUCK_DIGITS_AT_END = "[а-яёА-ЯЁa-zA-Z]+[\\d]+";
     private static final String STUCK_DIGITS_AT_BEGINNING = "[\\d]+[а-яёА-ЯЁa-zA-Z]+";
