@@ -17,7 +17,7 @@ public class Patterns {
             "ъа|мъ|йй|йж|ьу|гй|эъ|уъ|аь|чъ|хй|тй|чщ|ръ|юъ|фъ|уы|аъ|юь|аы|юы|эь|эы|бй|яь|ьы|ьь|ьъ|" +
             "яъ|яы|хщ|дй|фй";
     public static final String INCORRECT_LONELY_LETTER = " {1}[гдеёзйлмнпртфхцчшщъыьэю] {1}";
-    public static final String VALID_LONELY_LETTER = "абвжикосуя";
+    public static final String VALID_LONELY_LETTER = "[абвжикосуя]";
     public final static List<String> regexBruteList = new ArrayList<>() {{
         add(INCORRECT_LENGTH_BETWEEN_SPACES);
         add(SPACE_AFTER_PUNCTUATION);
