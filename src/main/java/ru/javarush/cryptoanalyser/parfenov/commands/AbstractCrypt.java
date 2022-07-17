@@ -45,7 +45,7 @@ public abstract class AbstractCrypt {
     }
 
     public Result getResult(Path in, Path out, StatCollector inStats, StatCollector dicStats) {
-        TreeMap<CharAndFrequency, CharAndFrequency> encCharToDicChar = inStats.getMapForDraft(dicStats.getCharsFreq());
+        TreeMap<Character, CharAndFrequency> encCharToDicChar = inStats.getMapForDraft(dicStats.getCharsFreq());
 
         int bufferSize = 200;
         boolean checked = false;
@@ -65,13 +65,13 @@ public abstract class AbstractCrypt {
                 reader.reset();
                 checked = tableOfCorrespondingCharsCorrector(buffer, encCharToDicChar);
             }
-//            int character;
-//            while ((character = reader.read()) != -1) {
-//                character = Character.toLowerCase(character);//******************!!!!!!!!!!!!!!!!!!!!!!
-//                if ((character = encrypting(character, key)) != -1) {
-//                    writer.write(character);
-//                }
-//            }
+            int character;
+            while ((character = reader.read()) != -1) {
+                //character = Character.toLowerCase(character);//******************!!!!!!!!!!!!!!!!!!!!!!
+                if ((character = encrypting(character, encCharToDicChar)) != -1) {
+                    writer.write(character);
+                }
+            }
         } catch (IOException e) {
             throw new ApplicationException("It's a problem with your file", e);
         }
@@ -79,10 +79,12 @@ public abstract class AbstractCrypt {
         return new Result(ResultCode.OK, "Done");
     }
 
-    public int encrypting(int character, TreeMap<CharAndFrequency, CharAndFrequency> encCharToDicChar) {
-        return encCharToDicChar.get(new CharAndFrequency((char) character)).getCharacter();
+    public int encrypting(int character, TreeMap<Character, CharAndFrequency> encCharToDicChar) {
+        System.out.println(encCharToDicChar.toString());
+        System.out.println("!!!" + (char)character);
+        return encCharToDicChar.get((char) character).getCharacter();
     }
-    private boolean tableOfCorrespondingCharsCorrector(StringBuilder buffer, TreeMap<CharAndFrequency, CharAndFrequency> encCharToDicChar) {
+    private boolean tableOfCorrespondingCharsCorrector(StringBuilder buffer, TreeMap<Character, CharAndFrequency> encCharToDicChar) {
         boolean checked = true;
         int index = SpellChecker.getIndexOfMatching(buffer, Patterns.INCORRECT_LONELY_LETTER);
         if(index != -1) {
@@ -94,7 +96,7 @@ public abstract class AbstractCrypt {
         }
         return checked;
     }
-    private CharAndFrequency getSecondPartOfSwapBase(CharAndFrequency firstPartOfSwapBase, TreeMap<CharAndFrequency, CharAndFrequency> encCharToDicChar, String pattern) {
+    private CharAndFrequency getSecondPartOfSwapBase(CharAndFrequency firstPartOfSwapBase, TreeMap<Character, CharAndFrequency> encCharToDicChar, String pattern) {
         ArrayList<CharAndFrequency> listOfCandidates = new ArrayList<>();
         CharAndFrequency secondPartOfSwapBase = firstPartOfSwapBase;
         SortedMap<CharAndFrequency, CharAndFrequency> charStatHead = encCharToDicChar.headMap(firstPartOfSwapBase);
