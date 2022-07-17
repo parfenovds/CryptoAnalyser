@@ -68,13 +68,13 @@ public abstract class AbstractCrypt {
                 reader.reset();
                 checked = tableOfCorrespondingCharsCorrector(buffer, encCharToDicChar);
             }
-//            int character;
-//            while ((character = reader.read()) != -1) {
-//                character = Character.toLowerCase(character);//******************!!!!!!!!!!!!!!!!!!!!!!
-//                if ((character = encrypting(character, key)) != -1) {
-//                    writer.write(character);
-//                }
-//            }
+            int character;
+            while ((character = reader.read()) != -1) {
+                //character = Character.toLowerCase(character);//******************!!!!!!!!!!!!!!!!!!!!!!
+                if ((character = encrypting(character, encCharToDicChar)) != -1) {
+                    writer.write(character);
+                }
+            }
         } catch (IOException e) {
             throw new ApplicationException("It's a problem with your file", e);
         }
