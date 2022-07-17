@@ -89,19 +89,34 @@ public class StatCollector {
     //TODO change char - CaF to CaF - CaF!!!!!!
     public TreeMap<CharAndFrequency, CharAndFrequency> getMapForDraft(TreeMap<CharAndFrequency, Character> dicCharsFreq) {
         TreeMap<CharAndFrequency, CharAndFrequency> result = new TreeMap<>();
-//        while(this.charsFreq.size() > 0) {
-//
-//        }
-//        for (CharAndFrequency key : this.charsFreq.keySet()) {
-//            result.put(key, )
-//        }
-//        NavigableSet<CharAndFrequency> charAndFrequencies = this.charsFreq.navigableKeySet();
         Set<Map.Entry<CharAndFrequency, Character>> encEntrySet = this.charsFreq.entrySet();
         Set<Map.Entry<CharAndFrequency, Character>> dicEntrySet = dicCharsFreq.entrySet();
         Iterator<Map.Entry<CharAndFrequency, Character>> iteratorEnc = encEntrySet.iterator();
         Iterator<Map.Entry<CharAndFrequency, Character>> iteratorDic = dicEntrySet.iterator();
         while(iteratorEnc.hasNext()) {
             result.put(iteratorEnc.next().getKey(), iteratorDic.next().getKey());
+        }
+        return result;
+    }
+    public TreeMap<Character, CharAndFrequency> getMapForDraftShorted(TreeMap<CharAndFrequency, Character> dicCharsFreq) {
+        TreeMap<Character, CharAndFrequency> result = new TreeMap<>();
+        Set<Map.Entry<CharAndFrequency, Character>> encEntrySet = this.charsFreq.entrySet();
+        Set<Map.Entry<CharAndFrequency, Character>> dicEntrySet = dicCharsFreq.entrySet();
+        Iterator<Map.Entry<CharAndFrequency, Character>> iteratorEnc = encEntrySet.iterator();
+        Iterator<Map.Entry<CharAndFrequency, Character>> iteratorDic = dicEntrySet.iterator();
+        while(iteratorEnc.hasNext()) {
+            result.put(iteratorEnc.next().getValue(), iteratorDic.next().getKey());
+        }
+        return result;
+    }
+    public LinkedHashMap<Character, CharAndFrequency> getDraftCharToDicCaf(TreeMap<CharAndFrequency, Character> dicCharsFreq) {
+        LinkedHashMap<Character, CharAndFrequency> result = new LinkedHashMap<>();
+        Set<Map.Entry<CharAndFrequency, Character>> encEntrySet = this.charsFreq.entrySet();
+        Set<Map.Entry<CharAndFrequency, Character>> dicEntrySet = dicCharsFreq.entrySet();
+        Iterator<Map.Entry<CharAndFrequency, Character>> iteratorEnc = encEntrySet.iterator();
+        Iterator<Map.Entry<CharAndFrequency, Character>> iteratorDic = dicEntrySet.iterator();
+        while(iteratorEnc.hasNext()) {
+            result.put(iteratorEnc.next().getValue(), iteratorDic.next().getKey());
         }
         return result;
     }

@@ -46,6 +46,9 @@ public abstract class AbstractCrypt {
 
     public Result getResult(Path in, Path out, StatCollector inStats, StatCollector dicStats) {
         TreeMap<CharAndFrequency, CharAndFrequency> encCharToDicChar = inStats.getMapForDraft(dicStats.getCharsFreq());
+        TreeMap<Character, CharAndFrequency> encCharToDicCharShorted = inStats.getMapForDraftShorted(dicStats.getCharsFreq());
+        LinkedHashMap<Character, CharAndFrequency> DraftCharToDicCaf = inStats.getDraftCharToDicCaf(dicStats.getCharsFreq());
+
 
         int bufferSize = 200;
         boolean checked = false;
@@ -58,7 +61,7 @@ public abstract class AbstractCrypt {
                 StringBuilder buffer = new StringBuilder();
                 while(reader.ready() && counter++ < bufferSize) {
                     character = reader.read();
-                    if ((character = encrypting(character, encCharToDicChar)) != -1) {
+                    if ((character = encrypting(character, encCharToDicCharShorted)) != -1) {
                         buffer.append((char)character);
                     }
                 }
@@ -79,8 +82,8 @@ public abstract class AbstractCrypt {
         return new Result(ResultCode.OK, "Done");
     }
 
-    public int encrypting(int character, TreeMap<CharAndFrequency, CharAndFrequency> encCharToDicChar) {
-        return encCharToDicChar.get(new CharAndFrequency((char) character)).getCharacter();
+    public int encrypting(int character, TreeMap<Character, CharAndFrequency> encCharToDicChar) {
+        return encCharToDicChar.get((char) character).getCharacter();
     }
     private boolean tableOfCorrespondingCharsCorrector(StringBuilder buffer, TreeMap<CharAndFrequency, CharAndFrequency> encCharToDicChar) {
         boolean checked = true;
