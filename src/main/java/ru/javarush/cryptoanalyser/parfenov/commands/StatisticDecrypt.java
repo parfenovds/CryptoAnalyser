@@ -21,6 +21,7 @@ public class StatisticDecrypt extends AbstractCrypt implements Action {
         System.out.println("StatisticDecrypt is here!");
     }
     private final ArgumentTypes[] argumentTypes = { ArgumentTypes.INPUT_FILE, ArgumentTypes.OUTPUT_FILE, ArgumentTypes.DICT_FILE };
+    private Character lastChange = null;
     public Result execute(Map<ArgumentTypes, Object> arguments) {
         Path inputPath = (Path) arguments.get(ArgumentTypes.INPUT_FILE);
         Path outputPath = (Path) arguments.get(ArgumentTypes.OUTPUT_FILE);
@@ -58,7 +59,7 @@ public class StatisticDecrypt extends AbstractCrypt implements Action {
                     {Patterns.SPACE_AFTER_PUNCTUATION, Patterns.VALID_CHAR_INSTEAD_OF_PUNCTUATION, "0"}};
             int countToStop = 0;
             for (String[] patterns : patternsToCheck) {
-                while (!checked && countToStop < 2) {
+                while (!checked && countToStop < 20) {
                     System.out.println(countToStop);
                     countToStop++;
                     int counter = 0;
@@ -75,6 +76,7 @@ public class StatisticDecrypt extends AbstractCrypt implements Action {
                 }
                 checked = false;
                 countToStop = 0;
+                lastChange = null;
             }
             int character;
             while ((character = reader.read()) != -1) {
@@ -117,6 +119,7 @@ public class StatisticDecrypt extends AbstractCrypt implements Action {
             Character secondPartOfSwapBase = getSecondPartOfSwapBase(firstPartOfSwapBase, DraftCharToDicCaf, patternForValidity);
             char firstCafChar = DraftCharToDicCaf.get(firstPartOfSwapBase).getCharacter();
             char secondCafChar = DraftCharToDicCaf.get(secondPartOfSwapBase).getCharacter();
+            lastChange = secondCafChar;
             DraftCharToDicCaf.get(firstPartOfSwapBase).setCharacter(secondCafChar);
             DraftCharToDicCaf.get(secondPartOfSwapBase).setCharacter(firstCafChar);
         }
@@ -143,7 +146,7 @@ public class StatisticDecrypt extends AbstractCrypt implements Action {
             return Math.abs(o1.getFrequency() - d) - Math.abs(o2.getFrequency() - d);
         });
         for (CharAndFrequency candidate : listOfCandidates) {
-            if(SpellChecker.patternMatchingChecker(candidate.getCharacter(), pattern)) {
+            if(SpellChecker.patternMatchingChecker(candidate.getCharacter(), pattern) && (lastChange == null || candidate.getCharacter() != lastChange)) {
                 secondPartOfSwapBase = getCharByCaf(candidate, DraftCharToDicCaf);
                 break;
             }
