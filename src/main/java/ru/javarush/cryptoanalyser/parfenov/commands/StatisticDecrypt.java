@@ -11,11 +11,13 @@ import ru.javarush.cryptoanalyser.parfenov.util.SpellChecker;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class StatisticDecrypt extends AbstractCrypt implements Action {
+
+    private Character lastFirstSwapBase = null;
+    private Character lastSecondSwapBase = null;
+    private HashMap<Character, HashSet<Character>> lastSwap = new HashMap<>();
 
     public static void printIt() {
         System.out.println("StatisticDecrypt is here!");
@@ -49,33 +51,38 @@ public class StatisticDecrypt extends AbstractCrypt implements Action {
         LinkedHashMap<Character, CharAndFrequency> DraftCharToDicCaf = inStats.getDraftCharToDicCaf(dicStats.getCharsFreq());
 
 
-        int bufferSize = 2000;
+        int bufferSize = 15000;
         boolean checked = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(in.toFile()));
              BufferedWriter writer = new BufferedWriter(new FileWriter(out.toFile()))) {
-            reader.mark(1);
-            String[][] patternsToCheck = {{Patterns.INCORRECT_LONELY_LETTER, Patterns.VALID_LONELY_LETTER, "1"},
-                    {Patterns.SPACE_AFTER_PUNCTUATION, Patterns.VALID_CHAR_INSTEAD_OF_PUNCTUATION, "0"}};
-            int countToStop = 0;
-            for (String[] patterns : patternsToCheck) {
-                while (!checked && countToStop < 2) {
-                    System.out.println(countToStop);
-                    countToStop++;
-                    int counter = 0;
-                    int character;
-                    StringBuilder buffer = new StringBuilder();
-                    while (reader.ready() && counter++ < bufferSize) {
-                        character = reader.read();
-                        if ((character = encrypting(character, DraftCharToDicCaf)) != -1) {
-                            buffer.append((char) character);
-                        }
-                    }
-                    reader.reset();
-                    checked = CorrectorConveyor(buffer, DraftCharToDicCaf, patterns);
-                }
-                checked = false;
-                countToStop = 0;
-            }
+//            reader.mark(1);
+//            String[][] patternsToCheck = {{Patterns.INCORRECT_LONELY_LETTER, Patterns.VALID_LONELY_LETTER, "1"},
+//                     {Patterns.SPACE_AFTER_PUNCTUATION, Patterns.VALID_CHAR_INSTEAD_OF_PUNCTUATION, "0"}};
+//
+//            int countToStop = 0;
+//            for (String[] patterns : patternsToCheck) {
+//                while (!checked && countToStop < 10) {
+//                    System.out.println(countToStop);
+//                    countToStop++;
+//                    int counter = 0;
+//                    int character;
+//                    StringBuilder buffer = new StringBuilder();
+//                    while (reader.ready() && counter++ < bufferSize) {
+//                        character = reader.read();
+//                        if ((character = encrypting(character, DraftCharToDicCaf)) != -1) {
+//                            buffer.append((char) character);
+//                        }
+//                    }
+//                    reader.reset();
+//                    System.out.println("*".repeat(20));
+//                    System.out.println(DraftCharToDicCaf);
+//                    checked = CorrectorConveyor(buffer, DraftCharToDicCaf, patterns);
+//                    System.out.println("*".repeat(20));
+//                    System.out.println(DraftCharToDicCaf);
+//                }
+//                checked = false;
+//                countToStop = 0;
+//            }
             int character;
             while ((character = reader.read()) != -1) {
                 //character = Character.toLowerCase(character);//******************!!!!!!!!!!!!!!!!!!!!!!
@@ -112,29 +119,50 @@ public class StatisticDecrypt extends AbstractCrypt implements Action {
         int index = SpellChecker.getIndexOfMatching(buffer, patternForIncorrectness);
         if(index != -1) {
             checked = false;
-            //Character firstPartOfSwapBase = buffer.charAt(index + 1);
             Character firstPartOfSwapBase = getBaseOfCafByChar(buffer.charAt(index + indexMovement), DraftCharToDicCaf);
-            Character secondPartOfSwapBase = getSecondPartOfSwapBase(firstPartOfSwapBase, DraftCharToDicCaf, patternForValidity);
-            char firstCafChar = DraftCharToDicCaf.get(firstPartOfSwapBase).getCharacter();
-            char secondCafChar = DraftCharToDicCaf.get(secondPartOfSwapBase).getCharacter();
-            DraftCharToDicCaf.get(firstPartOfSwapBase).setCharacter(secondCafChar);
-            DraftCharToDicCaf.get(secondPartOfSwapBase).setCharacter(firstCafChar);
+            Character secondPartOfSwapBase = getSecondPartOfSwapBase(firstPartOfSwapBase, DraftCharToDicCaf, patternForValidity, null);
+//            if(firstPartOfSwapBase.equals(lastFirstSwapBase)) {
+//                swapMirrorsOfCharsWithNoFreq(DraftCharToDicCaf, lastSecondSwapBase, lastFirstSwapBase);
+//                secondPartOfSwapBase = getSecondPartOfSwapBase(firstPartOfSwapBase, DraftCharToDicCaf, patternForValidity, lastSecondSwapBase);
+//            }
+            swapMirrorsOfCharsWithNoFreq(DraftCharToDicCaf, firstPartOfSwapBase, secondPartOfSwapBase);
+//            if(!lastSwap.containsKey(DraftCharToDicCaf.get(firstPartOfSwapBase).getCharacter())) {
+//                lastSwap.put(DraftCharToDicCaf.get(firstPartOfSwapBase).getCharacter(), new HashSet<>());
+//            }
+//            lastSwap.get(DraftCharToDicCaf.get(firstPartOfSwapBase).getCharacter()).add(DraftCharToDicCaf.get(secondPartOfSwapBase).getCharacter());
+
         }
         return checked;
     }
-    private Character getSecondPartOfSwapBase(Character firstPartOfSwapBase, LinkedHashMap<Character, CharAndFrequency> DraftCharToDicCaf, String pattern) {
+
+    private void swapMirrorsOfCharsWithNoFreq(LinkedHashMap<Character, CharAndFrequency> DraftCharToDicCaf, Character firstPartOfSwapBase, Character secondPartOfSwapBase) {
+
+        char firstCafChar = DraftCharToDicCaf.get(firstPartOfSwapBase).getCharacter();
+        char secondCafChar = DraftCharToDicCaf.get(secondPartOfSwapBase).getCharacter();
+        DraftCharToDicCaf.get(firstPartOfSwapBase).setCharacter(secondCafChar);
+        DraftCharToDicCaf.get(secondPartOfSwapBase).setCharacter(firstCafChar);
+    }
+
+    private Character getSecondPartOfSwapBase(Character firstPartOfSwapBase,
+                                              LinkedHashMap<Character, CharAndFrequency> DraftCharToDicCaf,
+                                              String pattern, Character excludeThisChar) {
         ArrayList<CharAndFrequency> listOfCandidates = new ArrayList<>();
         ArrayList<Character> listOfBasesForCandidates = new ArrayList<>(DraftCharToDicCaf.keySet());
+        //listOfBasesForCandidates.remove(excludeThisChar);
         Character secondPartOfSwapBase = null;
-        //SortedMap<CharAndFrequency, CharAndFrequency> charStatHead = DraftCharToDicCaf.headMap(firstPartOfSwapBase);
-        //SortedMap<CharAndFrequency, CharAndFrequency> charStatTail = DraftCharToDicCaf.tailMap(firstPartOfSwapBase);
-        //charStatTail.remove(firstPartOfSwapBase);
         int indexOfFirstChar = listOfBasesForCandidates.indexOf(firstPartOfSwapBase);
         int radiusOfPicking = 3;
         int indexToBegin = Math.max(0, indexOfFirstChar - radiusOfPicking);
         int indexToStop = Math.min(listOfBasesForCandidates.size() - 1, indexOfFirstChar + radiusOfPicking);
-        for (int i = indexToBegin; i < indexToStop; i++) {
-            if(i != indexOfFirstChar) {
+        for (int i = indexToBegin; i <= indexToStop; i++) {
+//        for (int i = 0; i < listOfBasesForCandidates.size(); i++) {
+            Character key = firstPartOfSwapBase;
+            //Character key = listOfBasesForCandidates.get(firstPartOfSwapBase);
+            char charFromCaf = DraftCharToDicCaf.get(key).getCharacter();
+            if(!lastSwap.containsKey(charFromCaf)) {
+                lastSwap.put(charFromCaf, new HashSet<>());
+            }
+            if(i != indexOfFirstChar && !lastSwap.get(charFromCaf).contains(DraftCharToDicCaf.get(listOfBasesForCandidates.get(i)).getCharacter())) {//не пущу его в лист кандидатов, если он уже с этим символом менялся местами! - дописать эту идею здесь!
                 listOfCandidates.add(DraftCharToDicCaf.get(listOfBasesForCandidates.get(i)));
             }
         }
@@ -145,6 +173,8 @@ public class StatisticDecrypt extends AbstractCrypt implements Action {
         for (CharAndFrequency candidate : listOfCandidates) {
             if(SpellChecker.patternMatchingChecker(candidate.getCharacter(), pattern)) {
                 secondPartOfSwapBase = getCharByCaf(candidate, DraftCharToDicCaf);
+                char charFromCaf = DraftCharToDicCaf.get(firstPartOfSwapBase).getCharacter();
+                lastSwap.get(charFromCaf).add(DraftCharToDicCaf.get(secondPartOfSwapBase).getCharacter());
                 break;
             }
         }

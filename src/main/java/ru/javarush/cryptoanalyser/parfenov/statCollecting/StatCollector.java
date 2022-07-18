@@ -33,26 +33,26 @@ public class StatCollector {
             mapReversingConveyor(prevCharsFreqCollect, prevCharsFreq);
             charsFreq = getReversedMap(charsFreqCollect);
 
-            System.out.println("*".repeat(20) + "mainStatistics");
-            for (CharAndFrequency character : charsFreq.keySet()) {
-                System.out.println("\"" + character.getCharacter() + "\"" + " is " + character.getFrequency());
-            }
-            System.out.println("*".repeat(20) + "nextStatistics:");
-            for (Character character : nextCharsFreq.keySet()) {
-                System.out.println("For " + character + ":");
-                for (CharAndFrequency innerCh : nextCharsFreq.get(character).keySet()) {
-                    System.out.println(innerCh.getCharacter() + " = " +
-                            innerCh.getFrequency());
-                }
-            }
-            System.out.println("*".repeat(20) + "previousStatistics:");
-            for (Character character : prevCharsFreq.keySet()) {
-                System.out.println("For " + character + ":");
-                for (CharAndFrequency innerCh : prevCharsFreq.get(character).keySet()) {
-                    System.out.println(innerCh.getCharacter() + " = " +
-                            innerCh.getFrequency());
-                }
-            }
+//            System.out.println("*".repeat(20) + "mainStatistics");
+//            for (CharAndFrequency character : charsFreq.keySet()) {
+//                System.out.println("\"" + character.getCharacter() + "\"" + " is " + character.getFrequency());
+//            }
+//            System.out.println("*".repeat(20) + "nextStatistics:");
+//            for (Character character : nextCharsFreq.keySet()) {
+//                System.out.println("For " + character + ":");
+//                for (CharAndFrequency innerCh : nextCharsFreq.get(character).keySet()) {
+//                    System.out.println(innerCh.getCharacter() + " = " +
+//                            innerCh.getFrequency());
+//                }
+//            }
+//            System.out.println("*".repeat(20) + "previousStatistics:");
+//            for (Character character : prevCharsFreq.keySet()) {
+//                System.out.println("For " + character + ":");
+//                for (CharAndFrequency innerCh : prevCharsFreq.get(character).keySet()) {
+//                    System.out.println(innerCh.getCharacter() + " = " +
+//                            innerCh.getFrequency());
+//                }
+//            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
