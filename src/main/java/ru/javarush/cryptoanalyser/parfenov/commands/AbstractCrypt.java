@@ -29,16 +29,9 @@ public abstract class AbstractCrypt {
         }
         return new Result(ResultCode.OK, "Done");
     }
-
-
-
-
     public int encrypting(int character, int key) {
-        //Character ch = (char)character;
-        //String alphabet = Alphabet.FULL_ALPHABET;
         String alphabet = Alphabet.TINY_ALPHA;
         int a = alphabet.indexOf((char)character);
-        //if(a == -1) System.out.println((char) character);
         if(a == -1) return a;
         int b = Math.floorMod((a + (key % alphabet.length())), alphabet.length());
         return (int) alphabet.charAt(b);
