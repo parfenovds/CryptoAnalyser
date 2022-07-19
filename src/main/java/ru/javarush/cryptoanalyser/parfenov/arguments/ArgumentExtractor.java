@@ -17,8 +17,8 @@ public class ArgumentExtractor {
             return Actions.find(command);
         } catch(IllegalArgumentException e) {
             throw new ApplicationException(command +
-                        " is not a valid command. You have to choose one of those: /n"
-                    + Arrays.toString(Actions.values()) + "/nTry again.", e);
+                        " is not a valid command. You have to choose one of those: "
+                    + Arrays.toString(Actions.values()), e);
         }
     }
 

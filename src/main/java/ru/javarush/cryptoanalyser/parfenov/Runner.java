@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Command(name = "cypher", subcommands = {CommandLine.HelpCommand.class },
         description = "Caesar cypher command")
-public class PicocliRunner implements Runnable {
+public class Runner implements Runnable {
     private final Map<ArgumentTypes, Object> arguments = new HashMap<>();
     @Spec CommandSpec spec;
     @Command(name = "encrypt", description = "Encrypt from file to file using key")
@@ -47,6 +47,7 @@ public class PicocliRunner implements Runnable {
         MainController mainController = new MainController();
         Application application = new Application(mainController);
         Result result = application.run(arguments);
+        System.out.println(result);
         // TODO
     }
 
@@ -70,6 +71,7 @@ public class PicocliRunner implements Runnable {
         MainController mainController = new MainController();
         Application application = new Application(mainController);
         Result result = application.run(arguments);
+        System.out.println(result);
     }
 
     @Command(name = "brute", description = "Decrypt from file to file using brute force") // |3|
@@ -89,6 +91,7 @@ public class PicocliRunner implements Runnable {
         MainController mainController = new MainController();
         Application application = new Application(mainController);
         Result result = application.run(arguments);
+        System.out.println(result);
     }
 
     @Command(name = "statistics", description = "Decrypt from file to file using statistical analysis") // |3|
@@ -105,6 +108,7 @@ public class PicocliRunner implements Runnable {
         MainController mainController = new MainController();
         Application application = new Application(mainController);
         Result result = application.run(arguments);
+        System.out.println(result);
     }
 
     @Override
@@ -113,7 +117,7 @@ public class PicocliRunner implements Runnable {
     }
 
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new PicocliRunner()).execute(args);
+        int exitCode = new CommandLine(new Runner()).execute(args);
         System.exit(exitCode);
     }
 }
