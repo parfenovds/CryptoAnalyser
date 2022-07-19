@@ -14,13 +14,15 @@ import java.nio.file.Path;
 import java.util.*;
 
 public abstract class AbstractCrypt {
-    public Result getResult(Path in, Path out, int key) {
+    public Result getResult(Path in, Path out, int key, String alphabet, boolean toLower) {
         try (BufferedReader reader = new BufferedReader(new FileReader(in.toFile()));
              BufferedWriter writer = new BufferedWriter(new FileWriter(out.toFile()))) {
             int character;
             while ((character = reader.read()) != -1) {
-                character = Character.toLowerCase(character);//******************!!!!!!!!!!!!!!!!!!!!!!
-                if ((character = encrypting(character, key)) != -1) {
+                if(toLower) {
+                    character = Character.toLowerCase(character);
+                }
+                if ((character = encrypting(character, key, alphabet)) != -1) {
                     writer.write(character);
                 }
             }
@@ -29,13 +31,15 @@ public abstract class AbstractCrypt {
         }
         return new Result(ResultCode.OK, "Done");
     }
-    public int encrypting(int character, int key) {
-        String alphabet = Alphabet.TINY_ALPHA;
+    public int encrypting(int character, int key, String alphabet) {
+        //String alphabet = Alphabet.TINY_ALPHA;
         int a = alphabet.indexOf((char)character);
         if(a == -1) return a;
         int b = Math.floorMod((a + (key % alphabet.length())), alphabet.length());
         return (int) alphabet.charAt(b);
     }
+
+
 
 
 }

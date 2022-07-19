@@ -12,9 +12,9 @@ public class Application {
     public Application(MainController mainController) {
         this.mainController = mainController;
     }
-    public Result run(String[] args) {
-        ArgumentHandler argumentHandler = new ArgumentHandler(args);
-        Map<ArgumentTypes, Object> arguments = argumentHandler.getMapOfArguments();
-        return mainController.execute(argumentHandler.getArguments());
+    public Result run(Map<ArgumentTypes, Object> arguments) {
+        //ArgumentHandler argumentHandler = new ArgumentHandler(args);
+        //Map<ArgumentTypes, Object> arguments = argumentHandler.getMapOfArguments();
+        return mainController.execute(arguments);
     }
 }

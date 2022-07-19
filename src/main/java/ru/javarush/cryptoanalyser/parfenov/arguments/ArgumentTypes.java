@@ -5,5 +5,7 @@ public enum ArgumentTypes {
     INPUT_FILE,
     OUTPUT_FILE,
     DICT_FILE,
-    KEY
+    KEY,
+    ALPHABET,
+    TO_LOWER_CASE
 }

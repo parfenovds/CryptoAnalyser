@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class ArgumentHandler {
     private final String[] args;
-    private Map<ArgumentTypes, Object> arguments = new HashMap<>();
+    private final Map<ArgumentTypes, Object> arguments = new HashMap<>();
     public ArgumentHandler(String[] args) {
         this.args = args;
     }

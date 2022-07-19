@@ -6,7 +6,6 @@ public class CharAndFrequency implements Comparable<CharAndFrequency> {
     private Character character;
 
     private int frequency;
-    private double percentage;
 
     public CharAndFrequency(Character character) {
         this.character = character;
@@ -20,18 +19,6 @@ public class CharAndFrequency implements Comparable<CharAndFrequency> {
         return character;
     }
 
-    public void setPercentage(double percentage) {
-        this.percentage = percentage;
-    }
-
-    public double getPercentage() {
-        return percentage;
-    }
-
-    public void setFrequency(int frequency) {
-        this.frequency = frequency;
-    }
-
     public int getFrequency() {
         return frequency;
     }
@@ -43,8 +30,7 @@ public class CharAndFrequency implements Comparable<CharAndFrequency> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CharAndFrequency)) return false;
-        CharAndFrequency that = (CharAndFrequency) o;
+        if (!(o instanceof CharAndFrequency that)) return false;
         return character == that.character;
     }
 
@@ -54,7 +40,7 @@ public class CharAndFrequency implements Comparable<CharAndFrequency> {
     }
 
     @Override
-    public int compareTo(CharAndFrequency anotherChar) {
+    public int compareTo(CharAndFrequency anotherChar) {//the reason why it's impossible to find Caf in TreeMap by char only
         int result = anotherChar.frequency - this.frequency;
         if(result == 0) {
             result = this.character.compareTo(anotherChar.character);

@@ -11,7 +11,7 @@ public class ArgumentChecker {
         }
         return amountOfArguments;
     }
-    public boolean hasExactAmountOfArguments(Action action, int amountOfArguments) {
+    public void hasExactAmountOfArguments(Action action, int amountOfArguments) {
         int commandArgument = 1;
         if(action.getArgumentAmount() != (amountOfArguments - commandArgument)) {
             throw new ApplicationException("You should have put " +
@@ -19,6 +19,5 @@ public class ArgumentChecker {
                     " argument(s) but you've put " +
                     amountOfArguments + " instead. Please, try again.");
         }
-        return true;
     }
 }
