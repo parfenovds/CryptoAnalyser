@@ -1,6 +1,5 @@
 package ru.javarush.cryptoanalyser.parfenov.app;
 
-import ru.javarush.cryptoanalyser.parfenov.arguments.ArgumentHandler;
 import ru.javarush.cryptoanalyser.parfenov.arguments.ArgumentTypes;
 import ru.javarush.cryptoanalyser.parfenov.entity.Result;
 import ru.javarush.cryptoanalyser.parfenov.controller.MainController;
@@ -13,8 +12,6 @@ public class Application {
         this.mainController = mainController;
     }
     public Result run(Map<ArgumentTypes, Object> arguments) {
-        //ArgumentHandler argumentHandler = new ArgumentHandler(args);
-        //Map<ArgumentTypes, Object> arguments = argumentHandler.getMapOfArguments();
         return mainController.execute(arguments);
     }
 }

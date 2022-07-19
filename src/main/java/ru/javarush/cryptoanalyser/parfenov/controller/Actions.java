@@ -5,8 +5,8 @@ import ru.javarush.cryptoanalyser.parfenov.commands.*;
 public enum Actions {
     ENCRYPT(new Encrypt()),
     DECRYPT(new Decrypt()),
-    BRUTE(new BruteForceDecrypt()),
-    STATISTICS(new StatisticDecrypt());
+    BRUTE(new Brute()),
+    STATISTICS(new Statistics());
 
     private final Action action;
 

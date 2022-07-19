@@ -15,10 +15,7 @@ import ru.javarush.cryptoanalyser.parfenov.constants.Alphabet;
 import ru.javarush.cryptoanalyser.parfenov.controller.MainController;
 import ru.javarush.cryptoanalyser.parfenov.entity.Result;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Locale;
-import java.io.File;
 import java.util.Map;
 
 @Command(name = "cypher", subcommands = {CommandLine.HelpCommand.class },
@@ -33,9 +30,9 @@ public class PicocliRunner implements Runnable {
             @Parameters(paramLabel = "<key>", description = "key for encryption") int key,
             @Option(names = {"-a", "--alphabet"}, paramLabel = "ALPHABET", description = "your custom alphabet") String alphabet,
             @Option(names = {"-t", "--tinyAlphabet"}, paramLabel = "TINY_ALPHABET", description = "(has priority over the --alphabet flag) if you want to use tiny alphabet (good for stat analysis)") boolean tinyAlphabet,
-            @Option(names = {"-l", "--toLowerCase"}, description = "your custom alphabet") boolean toLowerCase) {
+            @Option(names = {"-l", "--toLowerCase"}, description = "change every letter to lowercase before encrypting") boolean toLowerCase) {
         if(tinyAlphabet) {
-            alphabet = Alphabet.TINY_ALPHA;
+            alphabet = Alphabet.TINY_ALPHABET;
         } else if(alphabet == null) {
             alphabet = Alphabet.FULL_ALPHABET;
         }
@@ -73,7 +70,6 @@ public class PicocliRunner implements Runnable {
         MainController mainController = new MainController();
         Application application = new Application(mainController);
         Result result = application.run(arguments);
-        // TODO
     }
 
     @Command(name = "brute", description = "Decrypt from file to file using brute force") // |3|
@@ -93,7 +89,6 @@ public class PicocliRunner implements Runnable {
         MainController mainController = new MainController();
         Application application = new Application(mainController);
         Result result = application.run(arguments);
-        // TODO
     }
 
     @Command(name = "statistics", description = "Decrypt from file to file using statistical analysis") // |3|
@@ -111,9 +106,6 @@ public class PicocliRunner implements Runnable {
         Application application = new Application(mainController);
         Result result = application.run(arguments);
     }
-
-
-
 
     @Override
     public void run() {

@@ -38,12 +38,12 @@ public class ArgumentExtractor {
         }
     }
 
-    public int extractKey(String parameter) {
-        try {
-            return Integer.parseInt(parameter);
-        } catch(NumberFormatException e) {
-            throw new ApplicationException(parameter +
-                    " is not a key for the Caesar cypher. The key has to be an integer./n Try again.", e);
-        }
-    }
+//    public int extractKey(String parameter) {
+//        try {
+//            return Integer.parseInt(parameter);
+//        } catch(NumberFormatException e) {
+//            throw new ApplicationException(parameter +
+//                    " is not a key for the Caesar cypher. The key has to be an integer./n Try again.", e);
+//        }
+//    }
 }
