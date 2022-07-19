@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 public class ArgumentExtractor {
 
-    public Action extractCommand(String command) {
+    public static Action extractCommand(String command) {
         try {
             return Actions.find(command);
         } catch(IllegalArgumentException e) {
@@ -22,7 +22,7 @@ public class ArgumentExtractor {
         }
     }
 
-    public Path extractFileName(String parameter) {
+    public static Path extractFileName(String parameter) {
         try {
             Path path = Paths.get(parameter);
             if (path.getRoot() == null) {
@@ -38,7 +38,7 @@ public class ArgumentExtractor {
         }
     }
 
-//    public int extractKey(String parameter) {
+//    public static int extractKey(String parameter) {
 //        try {
 //            return Integer.parseInt(parameter);
 //        } catch(NumberFormatException e) {

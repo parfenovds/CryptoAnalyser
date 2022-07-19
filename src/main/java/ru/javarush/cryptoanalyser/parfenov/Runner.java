@@ -36,11 +36,10 @@ public class Runner implements Runnable {
         } else if(alphabet == null) {
             alphabet = Alphabet.FULL_ALPHABET;
         }
-        ArgumentExtractor argumentExtractor = new ArgumentExtractor();
-        Action action = argumentExtractor.extractCommand("encrypt");
+        Action action = ArgumentExtractor.extractCommand("encrypt");
         arguments.put(ArgumentTypes.COMMAND, action);
-        arguments.put(ArgumentTypes.INPUT_FILE, argumentExtractor.extractFileName(src));
-        arguments.put(ArgumentTypes.OUTPUT_FILE, argumentExtractor.extractFileName(dest));
+        arguments.put(ArgumentTypes.INPUT_FILE, ArgumentExtractor.extractFileName(src));
+        arguments.put(ArgumentTypes.OUTPUT_FILE, ArgumentExtractor.extractFileName(dest));
         arguments.put(ArgumentTypes.KEY, key);
         arguments.put(ArgumentTypes.ALPHABET, alphabet);
         arguments.put(ArgumentTypes.TO_LOWER_CASE, toLowerCase);
@@ -60,11 +59,10 @@ public class Runner implements Runnable {
         if(alphabet == null) {
             alphabet = Alphabet.FULL_ALPHABET;
         }
-        ArgumentExtractor argumentExtractor = new ArgumentExtractor();
-        Action action = argumentExtractor.extractCommand("decrypt");
+        Action action = ArgumentExtractor.extractCommand("decrypt");
         arguments.put(ArgumentTypes.COMMAND, action);
-        arguments.put(ArgumentTypes.INPUT_FILE, argumentExtractor.extractFileName(src));
-        arguments.put(ArgumentTypes.OUTPUT_FILE, argumentExtractor.extractFileName(dest));
+        arguments.put(ArgumentTypes.INPUT_FILE, ArgumentExtractor.extractFileName(src));
+        arguments.put(ArgumentTypes.OUTPUT_FILE, ArgumentExtractor.extractFileName(dest));
         arguments.put(ArgumentTypes.KEY, key);
         arguments.put(ArgumentTypes.ALPHABET, alphabet);
         arguments.put(ArgumentTypes.TO_LOWER_CASE, false);
@@ -82,11 +80,10 @@ public class Runner implements Runnable {
         if(alphabet == null) {
             alphabet = Alphabet.FULL_ALPHABET;
         }
-        ArgumentExtractor argumentExtractor = new ArgumentExtractor();
-        Action action = argumentExtractor.extractCommand("brute");
+        Action action = ArgumentExtractor.extractCommand("brute");
         arguments.put(ArgumentTypes.COMMAND, action);
-        arguments.put(ArgumentTypes.INPUT_FILE, argumentExtractor.extractFileName(src));
-        arguments.put(ArgumentTypes.OUTPUT_FILE, argumentExtractor.extractFileName(dest));
+        arguments.put(ArgumentTypes.INPUT_FILE, ArgumentExtractor.extractFileName(src));
+        arguments.put(ArgumentTypes.OUTPUT_FILE, ArgumentExtractor.extractFileName(dest));
         arguments.put(ArgumentTypes.ALPHABET, alphabet);
         MainController mainController = new MainController();
         Application application = new Application(mainController);
@@ -99,12 +96,11 @@ public class Runner implements Runnable {
             @Parameters(paramLabel = "<source file>", description = "source file with encrypted text") String src,
             @Parameters(paramLabel = "<dest file>", description = "dest file which should have decrypted text") String dest,
             @Parameters(paramLabel = "<dict file>", description = "file with unencrypted representative text") String dict) {
-        ArgumentExtractor argumentExtractor = new ArgumentExtractor();
-        Action action = argumentExtractor.extractCommand("statistics");
+        Action action = ArgumentExtractor.extractCommand("statistics");
         arguments.put(ArgumentTypes.COMMAND, action);
-        arguments.put(ArgumentTypes.INPUT_FILE, argumentExtractor.extractFileName(src));
-        arguments.put(ArgumentTypes.OUTPUT_FILE, argumentExtractor.extractFileName(dest));
-        arguments.put(ArgumentTypes.DICT_FILE, argumentExtractor.extractFileName(dict));
+        arguments.put(ArgumentTypes.INPUT_FILE, ArgumentExtractor.extractFileName(src));
+        arguments.put(ArgumentTypes.OUTPUT_FILE, ArgumentExtractor.extractFileName(dest));
+        arguments.put(ArgumentTypes.DICT_FILE, ArgumentExtractor.extractFileName(dict));
         MainController mainController = new MainController();
         Application application = new Application(mainController);
         Result result = application.run(arguments);

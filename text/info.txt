@@ -1,0 +1,7 @@
+encrypted_for_statistics_try.txt encrypted with:
+
+encrypt _file_to_encrypt.txt encrypted_for_statistics_try.txt 25 -t
+
+it could be decrypted with
+
+statistics encrypted_for_statistics_try.txt result_of_statistics.txt _representative.txt

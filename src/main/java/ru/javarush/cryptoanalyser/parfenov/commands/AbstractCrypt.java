@@ -13,7 +13,7 @@ import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
 
-public abstract class AbstractCrypt {
+public abstract class AbstractCrypt {//здесь еще можно было попробовать объединить поведение brute и statistics, но не успел
     public Result getResult(Path in, Path out, int key, String alphabet, boolean toLower) {
         try (BufferedReader reader = new BufferedReader(new FileReader(in.toFile()));
              BufferedWriter writer = new BufferedWriter(new FileWriter(out.toFile()))) {
