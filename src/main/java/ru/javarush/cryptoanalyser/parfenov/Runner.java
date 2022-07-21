@@ -47,7 +47,6 @@ public class Runner implements Runnable {
         Application application = new Application(mainController);
         Result result = application.run(arguments);
         System.out.println(result);
-        // TODO
     }
 
     @Command(name = "decrypt", description = "Decrypt from file to file using key") // |3|

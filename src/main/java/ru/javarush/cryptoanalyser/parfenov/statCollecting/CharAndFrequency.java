@@ -5,7 +5,6 @@ import java.util.Objects;
 public class CharAndFrequency implements Comparable<CharAndFrequency> {
     private Character character;
     private int frequency;
-    private double percentage;
     public CharAndFrequency(Character character) {
         this.character = character;
     }
@@ -18,15 +17,6 @@ public class CharAndFrequency implements Comparable<CharAndFrequency> {
     public void addFrequency() {
         frequency++;
     }
-
-    public double getPercentage() {
-        return percentage;
-    }
-
-    public void setPercentageByAmountOfCharsInText(int amountOfCharsInText) {
-        this.percentage = (this.frequency * 100)/((double)amountOfCharsInText);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,17 +1,11 @@
 package ru.javarush.cryptoanalyser.parfenov.commands;
 
-import ru.javarush.cryptoanalyser.parfenov.constants.Alphabet;
-import ru.javarush.cryptoanalyser.parfenov.constants.Patterns;
 import ru.javarush.cryptoanalyser.parfenov.entity.Result;
 import ru.javarush.cryptoanalyser.parfenov.entity.ResultCode;
 import ru.javarush.cryptoanalyser.parfenov.exception.ApplicationException;
-import ru.javarush.cryptoanalyser.parfenov.statCollecting.CharAndFrequency;
-import ru.javarush.cryptoanalyser.parfenov.statCollecting.StatCollector;
-import ru.javarush.cryptoanalyser.parfenov.util.SpellChecker;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.util.*;
 
 public abstract class AbstractCrypt {//здесь еще можно было попробовать объединить поведение brute и statistics, но не успел
     public Result getResult(Path in, Path out, int key, String alphabet, boolean toLower) {

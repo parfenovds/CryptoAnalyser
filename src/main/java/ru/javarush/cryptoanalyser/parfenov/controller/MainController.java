@@ -11,13 +11,12 @@ public class MainController {
 
 
     public Result execute(Map<ArgumentTypes, Object> arguments) {
-        Action action = null;
+        Action action;
         try {
             action = (Action) arguments.get(ArgumentTypes.COMMAND);
         } catch (ClassCastException e) {
             throw new ApplicationException("Somehow command is not in action...");
         }
-        Result result = action.execute(arguments);
-        return result;
+        return action.execute(arguments);
     }
 }
