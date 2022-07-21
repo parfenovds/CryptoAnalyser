@@ -19,7 +19,8 @@ public class Statistics extends AbstractCrypt implements Action {
     public Result execute(Map<ArgumentTypes, Object> arguments) {
         Path pathToEncryptedFile = (Path) arguments.get(ArgumentTypes.INPUT_FILE);
         Path pathToDecryptedFile = (Path) arguments.get(ArgumentTypes.OUTPUT_FILE);
-        Path pathToDictFileWithShrunkChars = generateDictFileWithShrunkChars(arguments, pathToEncryptedFile);
+        Path pathToDictFile = (Path) arguments.get(ArgumentTypes.DICT_FILE);
+        Path pathToDictFileWithShrunkChars = generateDictFileWithShrunkChars(arguments, pathToDictFile);
         StatCollector inputStatCollector = new StatCollector();
         StatCollector dictStatCollector = new StatCollector();
         inputStatCollector.getStatistics(pathToEncryptedFile);
@@ -57,6 +58,22 @@ public class Statistics extends AbstractCrypt implements Action {
             put(ArgumentTypes.ALPHABET, alphabet);
             put(ArgumentTypes.TO_LOWER_CASE, true);
         }};
+    }
+
+    private String getLoweredAlphabet(Path inputPath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputPath.toFile()))) {
+            StringBuilder alphabet = new StringBuilder();
+            while (reader.ready()) {
+                int intOfChar = reader.read();
+                //char loweredChar = Character.toLowerCase((char)intOfChar);
+                //alphabet.append(loweredChar);
+                //if(alphabet.indexOf((char)intOfChar) == -1)
+                alphabet.append((char)intOfChar);
+            }
+            return alphabet.toString();
+        } catch (IOException e) {
+            throw new ApplicationException("It's a problem with your file", e);
+        }
     }
 
     private String getAlphabet(Path inputPath) {
@@ -141,7 +158,10 @@ public class Statistics extends AbstractCrypt implements Action {
                     }
                     answer = sc.nextLine();
                     if(answer.isEmpty()) answer = "\n";
-                } while (answer.length() != 1 || !DraftCharToDicCaf.containsKey(answer.toCharArray()[0]));
+                } while (answer.length() != 1);
+//                if(!DraftCharToDicCaf.containsKey(answer.toCharArray()[0])) {
+//
+//                }
                 charsToSwap[i] = answer.toCharArray()[0];
             }
             swapChars(DraftCharToDicCaf, charsToSwap);
@@ -158,10 +178,18 @@ public class Statistics extends AbstractCrypt implements Action {
     private void swapChars(LinkedHashMap<Character, CharAndFrequency> DraftCharToDicCaf, Character[] charsToSwap) {
         Character firstPartOfSwapBase = getBaseOfCafByChar(charsToSwap[0], DraftCharToDicCaf);
         Character secondPartOfSwapBase = getBaseOfCafByChar(charsToSwap[1], DraftCharToDicCaf);
-        char firstCafChar = DraftCharToDicCaf.get(firstPartOfSwapBase).getCharacter();
-        char secondCafChar = DraftCharToDicCaf.get(secondPartOfSwapBase).getCharacter();
-        DraftCharToDicCaf.get(firstPartOfSwapBase).setCharacter(secondCafChar);
-        DraftCharToDicCaf.get(secondPartOfSwapBase).setCharacter(firstCafChar);
+//        if(firstPartOfSwapBase == null || secondPartOfSwapBase == null) {
+//            if (firstPartOfSwapBase == null) {
+//                DraftCharToDicCaf.get(secondPartOfSwapBase).setCharacter(charsToSwap[0]);
+//            } else if (secondPartOfSwapBase == null) {
+//                DraftCharToDicCaf.get(firstPartOfSwapBase).setCharacter(charsToSwap[1]);
+//            }
+//        } else {
+            char firstCafChar = DraftCharToDicCaf.get(firstPartOfSwapBase).getCharacter();
+            char secondCafChar = DraftCharToDicCaf.get(secondPartOfSwapBase).getCharacter();
+            DraftCharToDicCaf.get(firstPartOfSwapBase).setCharacter(secondCafChar);
+            DraftCharToDicCaf.get(secondPartOfSwapBase).setCharacter(firstCafChar);
+//        }
     }
 
     private Character getBaseOfCafByChar(Character character, LinkedHashMap<Character, CharAndFrequency> DraftCharToDicCaf) {
